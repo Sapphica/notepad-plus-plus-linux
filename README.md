@@ -8,7 +8,7 @@ A native Linux port of the Notepad++ text editor, built with Qt6 and QScintilla.
 
 ## My contribution: fix Find Next and Find Previous
 
-**Bug discovery and contribution: Shawna Flannigan ([Sapphica](https://github.com/Sapphica)).**
+**Bug discovery and contribution: ([Sapphica](https://github.com/Sapphica)).**
 
 The code fix is on the [`fix/find-dialog-search` branch](https://github.com/Sapphica/notepad-plus-plus-linux/tree/fix/find-dialog-search) and was submitted upstream as [PR #3](https://github.com/mixelpixx/notepad-plus-plus-linux/pull/3).
 
