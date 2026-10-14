@@ -6,6 +6,22 @@
 
 A native Linux port of the Notepad++ text editor, built with Qt6 and QScintilla.
 
+## My contribution: fix Find Next and Find Previous
+
+**Bug discovery and contribution: Shawna Flannigan ([Sapphica](https://github.com/Sapphica)).**
+
+The code fix is on the [`fix/find-dialog-search` branch](https://github.com/Sapphica/notepad-plus-plus-linux/tree/fix/find-dialog-search) and was submitted upstream as [PR #3](https://github.com/mixelpixx/notepad-plus-plus-linux/pull/3).
+
+**The bug I found:** On Ubuntu 24.04, using the native Notepad++ Linux v1.2.0 `.deb`, Ctrl+F opened the Find & Replace dialog, but Find Next did not locate text in a Python file. I confirmed with `grep` that the text was present.
+
+**Why it failed:** `FindReplaceDialog` emitted `findNext` and `findPrevious`, but `MainWindow` never connected either signal to the editor. Clicking the buttons therefore did not run a search.
+
+**What I fixed:** I contributed a 30-line C++ change in `core/MainWindow.cpp` that connects both signals to QScintilla's `findFirst()`. It searches forward or backward from the appropriate selection boundary, wraps at document boundaries, and passes through match-case, whole-word, and regular-expression options. The target is resolved through `currentEditor()` on each click, so switching tabs changes the document searched.
+
+**How it was verified:** I rebuilt the application with Qt6/CMake, confirmed both directions worked on the original failing file, and verified the installed executable through the normal desktop launcher. Additional native Qt6 tests exercised the actual dialog and editor: unmodified upstream failed on the first Find click, while the patched build passed all 30 assertions, including setup and guard checks. Search checks covered direction, wraparound, flags, UTF-8 text, selection boundaries, tab changes, and empty/no-match cases.
+
+**Scope:** This contribution restores Find navigation. Replace and Replace All are unchanged. Zero-width regex advancement and split-pane focus routing remain follow-up work; `currentEditor()` currently selects the primary editor pane.
+
 ## Overview
 
 Notepad++ Linux brings the core features of Notepad++ to Linux without Wine or compatibility layers. It is built with Qt6 and QScintilla and targets practical feature parity with the Windows version.
