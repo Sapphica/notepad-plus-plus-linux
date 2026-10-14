@@ -12,6 +12,8 @@ A native Linux port of the Notepad++ text editor, built with Qt6 and QScintilla.
 
 The code fix is on the [`fix/find-dialog-search` branch](https://github.com/Sapphica/notepad-plus-plus-linux/tree/fix/find-dialog-search) and was submitted upstream as [PR #3](https://github.com/mixelpixx/notepad-plus-plus-linux/pull/3).
 
+**Detailed technical write-up:** [Bug reproduction, root cause, fix and verification](docs/find-dialog-navigation-fix.md).
+
 **The bug I found:** On Ubuntu 24.04, using the native Notepad++ Linux v1.2.0 `.deb`, Ctrl+F opened the Find & Replace dialog, but Find Next did not locate text in a Python file. I confirmed with `grep` that the text was present.
 
 **Why it failed:** `FindReplaceDialog` emitted `findNext` and `findPrevious`, but `MainWindow` never connected either signal to the editor. Clicking the buttons therefore did not run a search.
